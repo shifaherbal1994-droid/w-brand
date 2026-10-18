@@ -1,45 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>W. Brand | Premium Fashion</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>W. Brand - Full Control</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Poppins',sans-serif;background:#0a0a0a;color:#fff}
-h1,h2{font-family:'Playfair Display',serif}
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.7)),url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070');background-size:cover;background-position:center}
-.hero h1{font-size:clamp(48px,10vw,110px);letter-spacing:8px}
-.hero p{letter-spacing:6px;margin:15px 0 30px;color:#d4af37}
-.btn{background:#d4af37;color:#000;padding:14px 38px;text-decoration:none;font-weight:600;letter-spacing:2px;border-radius:30px}
-.section{padding:80px 20px;max-width:1200px;margin:auto;text-align:center}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;margin-top:40px}
-.card{background:#151515;border-radius:16px;overflow:hidden;border:1px solid #222}
-.card img{width:100%;height:320px;object-fit:cover}
-.card h3{padding:15px;font-size:18px;letter-spacing:2px}
-footer{padding:40px;text-align:center;background:#111;color:#888;font-size:14px;letter-spacing:1px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#fdfbf7}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:12px;display:flex;justify-content:space-between;z-index:10}
+.logo{font-weight:800;letter-spacing:4px}
+.btn{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+.btn-b{background:#111;color:#fff}
+.btn-w{background:#fff;border:1px solid #ddd}
+.btn-g{background:#c6a87a;color:#fff}
+.hero{text-align:center;padding:28px;background:linear-gradient(#f5efe6,#fdfbf7)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;max-width:1000px;margin:auto}
+.card{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px}
+.img{font-size:40px;text-align:center;background:#faf6ef;border-radius:8px;padding:16px 0}
+.price{color:#b8975f;font-weight:700}
+.old{color:#999;text-decoration:line-through;font-size:12px}
+.dis{background:#111;color:#fff;font-size:10px;padding:2px 6px;border-radius:4px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:99;padding:16px}
+.modal.open{display:flex}
+.box{background:#fff;width:100%;max-width:480px;border-radius:14px;padding:18px;max-height:92vh;overflow:auto}
+input,select,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:6px 0}
+label{font-size:11px;color:#666;margin-top:8px;display:block}
 </style>
 </head>
 <body>
+<header>
+<div class="logo">W. BRAND</div>
+<div style="display:flex;gap:6px">
+<button class="btn btn-g" onclick="openAdmin()">⚙️ ADMIN</button>
+<button class="btn btn-w" onclick="openAcc()">👤 Account</button>
+<button class="btn btn-b" onclick="openCart()">🛒 <span id="cCount">0</span></button>
+</div>
+</header>
 <div class="hero">
-  <div>
-    <h1>W. Brand</h1>
-    <p>PREMIUM • ELEGANT • TIMELESS</p>
-    <a href="#collection" class="btn">SHOP COLLECTION</a>
-  </div>
+<h1 style="font-family:serif">W. Brand Store</h1>
+<p>آپ خود قیمت، ڈسکاؤنٹ، پروڈکٹ کنٹرول کریں</p>
+<p id="stats" style="font-size:12px;color:#999;margin-top:6px"></p>
 </div>
-<div class="section" id="collection">
-  <h2 style="font-size:42px;letter-spacing:4px">NEW COLLECTION</h2>
-  <p style="color:#aaa;margin-top:10px">Crafted for the modern icon</p>
-  <div class="grid">
-    <div class="card"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600"><h3>CLASSIC ABAYA</h3></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600"><h3>LUXE PRET</h3></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=600"><h3>EVENING EDIT</h3></div>
-  </div>
+<div id="grid" class="grid"></div>
+<div id="adminM" class="modal">
+<div class="box">
+<div style="display:flex;justify-content:space-between"><h3>ADMIN PANEL</h3><button class="btn btn-w" onclick="closeM('adminM')">✕</button></div>
+<div id="adminLogin">
+<p style="font-size:13px;margin:10px 0">پاسورڈ: <b>wbrand123</b></p>
+<input id="aPass" type="password" placeholder="Admin Password">
+<button class="btn btn-b" style="width:100%" onclick="loginA()">LOGIN</button>
 </div>
-<footer>
-  © 2026 W-BRAND | All Rights Reserved<br>Contact: w.brand.official | Karachi, Pakistan
-</footer>
+<div id="adminPanel" style="display:none">
+<label>نام *</label><input id="pName" placeholder="Herbal Oil">
+<label>قیمت آپ خود لکھیں *</label><input id="pPrice" type="number" placeholder="850">
+<label>پرانی قیمت (ڈسکاؤنٹ کے لیے)</label><input id="pOld" type="number" placeholder="1200">
+<label>کیٹیگری</label><select id="pCat"><option value="herbal">🌿 Herbal</option><option value="fragrance">🌸 Fragrance</option></select>
+<label>تفصیل</label><textarea id="pDesc" rows="2" placeholder="بالوں کے لیے بہترین"></textarea>
+<label>ایموجی</label><input id="pEmoji" placeholder="🌿">
+<input type="hidden" id="editId">
+<button class="btn btn-b" style="width:100%;margin-top:10px" onclick="saveP()">💾 SAVE PRODUCT</button>
+<button class="btn btn-w" style="width:100%;margin-top:6px" onclick="resetF()">نیا فارم</button>
+<div style="margin-top:14px;border-top:1px dashed #ddd;padding-top:10px">
+<h4 style="font-size:13px">آپ کی پروڈکٹس - Edit / Delete</h4>
+<div id="aList"></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="accM" class="modal"><div class="box">
+<div style="display:flex;justify-content:space-between"><h3>My Account</h3><button class="btn btn-w" onclick="closeM('accM')">✕</button></div>
+<div id="authBox"><label>نام</label><input id="uName" placeholder="آپ کا نام"><label>ای میل</label><input id="uEmail" placeholder="email@gmail.com"><label>پاسورڈ</label><input id="uPass" type="password" placeholder="پاسورڈ"><button class="btn btn-b" style="width:100%;margin-top:10px" onclick="auth()">اکاؤنٹ بنائیں</button></div>
+<div id="userBox" style="display:none"><p style="margin-top:10px"><b>نام:</b> <span id="sName"></span></p><p><b>ای میل:</b> <span id="sEmail"></span></p><button class="btn btn-w" style="width:100%;margin-top:10px;color:#c00" onclick="logout()">Logout</button></div>
+</div></div>
+
+<div id="cartM" class="modal"><div class="box">
+<div style="display:flex;justify-content:space-between"><h3>Cart</h3><button class="btn btn-w" onclick="closeM('cartM')">✕</button></div>
+<div id="cartList" style="margin-top:12px"></div>
+<div style="display:flex;justify-content:space-between;font-weight:700;padding:12px 0;border-top:1px solid #eee;margin-top:10px"><span>Total</span><span id="cTotal">Rs.0</span></div>
+<button class="btn btn-b" style="width:100%" onclick="checkout()">WhatsApp پر بھیجیں</button>
+</div></div>
+
+<script>
+let def=[{id:1,name:"Herbal Hair Oil",price:850,oldPrice:0,cat:"herbal",desc:"بال لمبے کرے",emoji:"🌿"},{id:2,name:"Neem Soap",price:350,oldPrice:500,cat:"herbal",desc:"کیل مہاسے",emoji:"🧼"}];
+let products=JSON.parse(localStorage.getItem('wbrand_final')||'null')||[...def];
+let cart=JSON.parse(localStorage.getItem('wbrand_cart')||'[]');
+let user=JSON.parse(localStorage.getItem('wbrand_user')||'null');
+function save(){localStorage.setItem('wbrand_final',JSON.stringify(products));localStorage.setItem('wbrand_cart',JSON.stringify(cart));}
+function render(){
+let g=document.getElementById('grid');g.innerHTML='';
+products.forEach(p=>{
+let dis='',old='';if(p.oldPrice&&p.oldPrice>p.price){let per=Math.round((p.oldPrice-p.price)/p.oldPrice*100);dis=`<span class=dis>-${per}% OFF</span>`;old=`<span class=old>Rs.${p.oldPrice}</span>`}
+g.innerHTML+=`<div class=card><div class=img>${p.emoji}</div><span style="font-size:10px;background:#f5efe6;padding:2px 6px;border-radius:99px">${p.cat}</span><h4 style="margin-top:6px">${p.name}</h4><p style="font-size:11px;color:#777">${p.desc||''}</p><div class=price>Rs.${p.price} ${old} ${dis}</div><button class="btn btn-b" style="width:100%;margin-top:8px" onclick="addC(${p.id})">Add to Cart</button></div>`;
+});
+document.getElementById('cCount').innerText=cart.length;
+document.getElementById('stats').innerText=`کل: ${products.length} | آپ کی: ${products.filter(x=>x.id>1000).length}`;
+renderAList();
+}
+function addC(id){let p=products.find(x=>x.id==id);cart.push(p);save();render();renderCart();openCart();}
+function renderCart(){let l=document.getElementById('cartList');if(cart.length==0){l.innerHTML='<p style="text-align:center;color:#999;padding:20px">خالی ہے</p>';document.getElementById('cTotal').innerText='Rs.0';return}l.innerHTML=cart.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><div><b>${c.name}</b><br><small>Rs.${c.price}</small></div><div style="color:#c00;cursor:pointer" onclick="remC(${i})">Remove</div></div>`).join('');let t=cart.reduce((s,x)=>s+x.price,0);document.getElementById('cTotal').innerText='Rs.'+t;}
+function remC(i){cart.splice(i,1);save();renderCart();render();}
+function openAdmin(){document.getElementById('adminM').classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function loginA(){let pw=document.getElementById('aPass').value;let sv=localStorage.getItem('wbrand_admin_pw')||'wbrand123';if(pw==sv){document.getElementById('adminLogin').style.display='none';document.getElementById('adminPanel').style.display='block';renderAList();}else{alert('غلط پاسورڈ! wbrand123 لکھیں');}}
+function resetF(){document.getElementById('editId').value='';document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pOld').value='';document.getElementById('pDesc').value='';document.getElementById('pEmoji').value='';}
+function saveP(){
+let eid=document.getElementById('editId').value;
+let name=document.getElementById('pName').value.trim();
+let price=parseInt(document.getElementById('pPrice').value);
+let oldP=parseInt(document.getElementById('pOld').value)||0;
+let cat=document.getElementById('pCat').value;
+let desc=document.getElementById('pDesc').value.trim();
+let emoji=document.getElementById('pEmoji').value.trim()||'🌿';
+if(!name||!price){alert('نام اور قیمت لکھیں');return}
+if(eid){let idx=products.findIndex(x=>x.id==eid);if(idx>-1){products[idx]={...products[idx],name,price,oldPrice:oldP,cat,desc,emoji}}}
+else{products.unshift({id:Date.now(),name,price,oldPrice:oldP,cat,desc,emoji});}
+save();render();resetF();alert('✅ محفوظ ہو گیا!');
+}
+function renderAList(){let b=document.getElementById('aList');if(!b)return;b.innerHTML=products.map(p=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0e9dd;font-size:12px"><div><b>${p.name}</b><br><small>Rs.${p.price} ${p.oldPrice?'(پرانی Rs.'+p.oldPrice+')':''}</small></div><div><button class="btn btn-w" style="padding:4px 8px;font-size:11px" onclick="editP(${p.id})">Edit</button> <button class="btn btn-w" style="padding:4px 8px;font-size:11px;color:#c00" onclick="delP(${p.id})">Del</button></div></div>`).join('');}
+function editP(id){let p=products.find(x=>x.id==id);document.getElementById('editId').value=p.id;document.getElementById('pName').value=p.name;document.getElementById('pPrice').value=p.price;document.getElementById('pOld').value=p.oldPrice||'';document.getElementById('pCat').value=p.cat;document.getElementById('pDesc').value=p.desc;document.getElementById('pEmoji').value=p.emoji;window.scrollTo(0,0);}
+function delP(id){if(!confirm('ڈیلیٹ کریں؟'))return;products=products.filter(x=>x.id!=id);save();render();}
+function openCart(){renderCart();document.getElementById('cartM').classList.add('open');}
+function openAcc(){document.getElementById('accM').classList.add('open');updAcc();}
+function updAcc(){if(user){document.getElementById('authBox').style.display='none';document.getElementById('userBox').style.display='block';document.getElementById('sName').innerText=user.name;document.getElementById('sEmail').innerText=user.email;}else{document.getElementById('authBox').style.display='block';document.getElementById('userBox').style.display='none';}}
+function auth(){let n=document.getElementById('uName').value.trim();let e=document.getElementById('uEmail').value.trim();let p=document.getElementById('uPass').value.trim();if(!n||!e||!p){alert('سب لکھیں');return}user={name:n,email:e,pass:p};localStorage.setItem('wbrand_user',JSON.stringify(user));updAcc();closeM('accM');}
+function logout(){user=null;localStorage.removeItem('wbrand_user');updAcc();}
+function checkout(){if(cart.length==0){alert('کارٹ خالی');return}if(!user){alert('پہلے اکاؤنٹ بنائیں');openAcc();return}let total=cart.reduce((s,x)=>s+x.price,0);let msg=`W. Brand Order - ${user.name}%0A`;cart.forEach(c=>msg+=`${c.name} - Rs.${c.price}%0A`);msg+=`Total: Rs.${total}`;window.open('https://wa.me/923000000000?text='+msg,'_blank');cart=[];save();render();closeM('cartM');}
+render();updAcc();
+</script>
 </body>
 </html>
